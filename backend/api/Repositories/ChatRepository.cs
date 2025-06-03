@@ -1,6 +1,27 @@
+using api.Interfaces;
+using api.Models;
+using api.Settings;
+using MongoDB.Driver;
+
 namespace api.Repositories;
 
-public class ChatRepository
+public class ChatRepository : IChatRepository
 {
+    private  readonly IMongoCollection<ChatMessage> _colection;
+
+    public ChatRepository(IMongoClient client, IMongoDbSettings dbSettings)
+    {
+        var dbName = client.GetDatabase(dbSettings.DatabaseName);
+        _colection = dbName.GetCollection<ChatMessage>("chats");
+    }
     
+    public async Task SavedMessageAsync(ChatMessage message)
+    {
+        await _colection.InsertOneAsync(message);
+    }
+
+    public async Task<List<ChatMessage>> GetMessageAsync()
+    {
+        return await _colection.Find(_ => true).ToListAsync();
+    }
 }
