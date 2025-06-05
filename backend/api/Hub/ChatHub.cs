@@ -1,7 +1,6 @@
 using api.Interfaces;
 using api.Models;
 using Microsoft.AspNetCore.SignalR;
-using NuGet.Packaging.Signing;
 
 namespace api.Hub;
 
@@ -24,7 +23,7 @@ public class ChatHub : Microsoft.AspNetCore.SignalR.Hub
         );
 
         await _chatRepository.SavedMessageAsync(chatMessage);
-        
-        await Clients.All.SendAsync("ReceiveMessage", user, message, chatMessage.Message);
+
+        await Clients.All.SendAsync("ReceiveMessage", user, message);
     }
 }

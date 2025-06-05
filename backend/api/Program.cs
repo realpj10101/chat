@@ -1,4 +1,6 @@
 using api.Hub;
+using api.Interfaces;
+using api.Repositories;
 using api.Settings;
 using Microsoft.Extensions.Options;
 using MongoDB.Driver;
@@ -25,12 +27,18 @@ builder.Services.AddSingleton<IMongoClient>(serviceProvider =>
 
 #endregion MongoDbSettings
 
+builder.Services.AddScoped<IChatRepository, ChatRepository>();
+
 #region Cors: baraye ta'eede Angular HttpClient requests
 
 builder.Services.AddCors(options =>
 {
     options.AddDefaultPolicy(policy =>
-        policy.AllowAnyHeader().AllowAnyMethod().WithOrigins("http://localhost:4200"));
+        policy
+            .AllowAnyHeader()
+            .AllowAnyMethod()
+            .AllowCredentials() 
+            .WithOrigins("http://localhost:4200"));
 });
 
 #endregion Cors
@@ -44,12 +52,14 @@ var app = builder.Build();
 
 // Configure the HTTP request pipeline.
 
-app.UseHttpsRedirection();
+app.UseRouting();
+
+app.UseCors();
 
 app.UseAuthorization();
 
-app.MapControllers();
-
 app.MapHub<ChatHub>("/chatHub");
+
+app.MapControllers();
 
 app.Run();

@@ -1,12 +1,12 @@
 <div class="chat-box">
     @if (messages().length > 0) {
         @for (message of messages(); track $index) {
-            <strong>{{ message.user }}: </strong> {{message}}
+            <strong>{{ message.user }}: </strong> {{message.message}}
         }
     } @else {
       <div class="empty">No messages yet.</div>
     }
-  
+
     <div class="input-box">
       <input [(ngModel)]="messageText" placeholder="Type a message..." />
       <button (click)="sendMessage()">Send</button>

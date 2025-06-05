@@ -13,11 +13,13 @@ export class ChatSerivce {
   messages = this.messagesSignal.asReadonly();
   private _http = inject(HttpClient);
 
-  private apiUrl = 'http://localhost:5119/api/chat/message';
+  private apiUrl = 'http://localhost:5000/api/chat/message';
 
   startConnection(): void {
     this.hubConection = new HubConnectionBuilder()
-      .withUrl('http://localhost:5119/chatHub')
+      .withUrl('http://localhost:5000/chatHub', {
+        withCredentials: true
+      })
       .build();
 
     this.hubConection
@@ -26,7 +28,7 @@ export class ChatSerivce {
       .catch((err) => console.error('SignalR connection error: ', err));
 
     this.hubConection.on(
-      'RecieveMessage',
+      'ReceiveMessage',
       (user: string, message: string,) => {
         const newMessage: ChatMessage = { user, message };
         this.messagesSignal.update((msgs) => [...msgs, newMessage]);
