@@ -1,9 +1,11 @@
-import { Component, inject, OnInit } from '@angular/core';
-import { ChatSerivce } from '../../services/chat';
-import { FormsModule } from '@angular/forms';
+import {Component, inject, OnInit} from '@angular/core';
+import {ChatSerivce} from '../../services/chat';
+import {FormsModule} from '@angular/forms';
+import {AppUser} from '../../models/app-user.model';
 
 @Component({
   selector: 'app-chat',
+  standalone: true,
   imports: [
     FormsModule
   ],
@@ -23,9 +25,17 @@ export class Chat implements OnInit {
     this.chatService.loadMessage().subscribe();
   }
 
+  getCurrentUser(): AppUser | null {
+    const currentUser: string | null = localStorage.getItem('currentUser');
+
+    return  currentUser ? JSON.parse(currentUser) : null;
+  }
+
   sendMessage(): void {
-    if (this.messageText.trim()) {
-      this.chatService.sendMessage(this.user, this.messageText);
+    const currentUser = this.getCurrentUser();
+
+    if (this.messageText.trim() && currentUser) {
+      this.chatService.sendMessage(currentUser.userName, this.messageText);
       this.messageText = '';
     }
   }

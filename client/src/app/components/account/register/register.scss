@@ -1,0 +1,27 @@
+.chat-box {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  max-width: 600px;
+  margin: 0 auto;
+  padding: 16px;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+
+  .input-box {
+    display: flex;
+    gap: 8px;
+    margin-top: auto;
+    padding-top: 16px;
+  }
+
+  input {
+    flex: 1;
+    padding: 8px;
+  }
+
+  button {
+    padding: 8px 16px;
+  }
+}
+
