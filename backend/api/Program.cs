@@ -44,14 +44,10 @@ builder.Services.AddCors(options =>
 
 #endregion Cors
 
-// Add services to the container.
-
 builder.Services.AddControllers();
 builder.Services.AddSignalR();
 
 var app = builder.Build();
-
-// Configure the HTTP request pipeline.
 
 app.UseRouting();
 

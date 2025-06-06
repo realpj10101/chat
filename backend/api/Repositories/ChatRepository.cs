@@ -7,21 +7,21 @@ namespace api.Repositories;
 
 public class ChatRepository : IChatRepository
 {
-    private  readonly IMongoCollection<ChatMessage> _colection;
+    private  readonly IMongoCollection<ChatMessage> _collection;
 
     public ChatRepository(IMongoClient client, IMongoDbSettings dbSettings)
     {
         var dbName = client.GetDatabase(dbSettings.DatabaseName);
-        _colection = dbName.GetCollection<ChatMessage>("chats");
+        _collection = dbName.GetCollection<ChatMessage>("chats");
     }
     
     public async Task SavedMessageAsync(ChatMessage message)
     {
-        await _colection.InsertOneAsync(message);
+        await _collection.InsertOneAsync(message);
     }
 
     public async Task<List<ChatMessage>> GetMessageAsync()
     {
-        return await _colection.Find(_ => true).ToListAsync();
+        return await _collection.Find(_ => true).ToListAsync();
     }
 }
